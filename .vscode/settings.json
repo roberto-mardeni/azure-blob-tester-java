@@ -1,0 +1,6 @@
+{
+    "java.format.settings.url": "eclipse-formatter.xml",
+    "editor.wordWrap": "on",
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "maven.view": "hierarchical"
+}
