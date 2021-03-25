@@ -66,9 +66,7 @@ public class App {
         System.out.println(String.format("\nCreated container %s", containerName));
 
         // Upload local files
-        // Thread.currentThread().getContextClassLoader().getResource("");
-        String localPath = "src/main/resources";
-        File folder = new File(localPath);
+        File folder = new File(ClassLoader.getSystemClassLoader().getResource("files").getFile());
         File[] listOfFiles = folder.listFiles();
 
         for (int i = 0; i < listOfFiles.length; i++) {
