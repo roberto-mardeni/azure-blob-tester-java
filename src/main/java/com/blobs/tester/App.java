@@ -14,12 +14,26 @@ public class App {
     static Boolean randomSleepsEnabled = false;
 
     public static void main(String[] args) throws IOException {
-        System.out.println("Azure Blob Storage v12 - Java quickstart sample\n");
+        System.out.println("Azure Blob Storage v12 - Tester\n");
+        System.out.println("Settings:");
 
+        // Retrieve value to enable random sleeps
         String randomSleepsEnabledSetting = System.getenv("ENABLE_RANDOM_SLEEPS");
 
         randomSleepsEnabled = (randomSleepsEnabledSetting != null
                 && randomSleepsEnabledSetting.toLowerCase().equalsIgnoreCase("true"));
+
+        System.out.println("\tRandom Sleep Enabled: " + randomSleepsEnabled);
+
+        // Retrieve value to enable file upload multiplier
+        int fileUploadMultiplier = 1;
+        String fileUploadMultiplierSetting = System.getenv("FILE_UPLOAD_MULTIPLIER");
+
+        if (fileUploadMultiplierSetting != null) {
+            fileUploadMultiplier = Integer.parseInt(fileUploadMultiplierSetting);
+        }
+
+        System.out.println("\tFile Upload Multipler: " + fileUploadMultiplier);
 
         // Retrieve the connection string for use with the application. The storage
         // connection string is stored in an environment variable on the machine
@@ -32,9 +46,9 @@ public class App {
 
         if (connectStr == null) {
             connectStr = "UseDevelopmentStorage=true";
-        } else {
-            System.out.println("Using connection string from environment");
-        }
+        } 
+        
+        System.out.println("\tAzure Storage Connection String: " + connectStr.substring(0, 21) + "\n");
 
         // Create a BlobServiceClient object which will be used to create a container
         // client
@@ -59,12 +73,16 @@ public class App {
 
         for (int i = 0; i < listOfFiles.length; i++) {
             if (listOfFiles[i].isFile()) {
-                String blobName = listOfFiles[i].getName();
-                System.out.println("\tUploading " + blobName);
-                BlobClient blobClient = containerClient.getBlobClient(blobName);
-                blobClient.uploadFromFile(listOfFiles[i].getAbsolutePath());
+                String fileName = listOfFiles[i].getName();
 
-                randomSleep();
+                for (int multiplier = 1; multiplier <= fileUploadMultiplier; multiplier++) {
+                    String blobName = multiplier + "-" + fileName;
+                    BlobClient blobClient = containerClient.getBlobClient(blobName);
+                    System.out.println("\tUploading " + blobName);
+                    blobClient.uploadFromFile(listOfFiles[i].getAbsolutePath());
+
+                    randomSleep();
+                }
             }
         }
 
