@@ -25,4 +25,5 @@ jobs:
     - name: Upload JAR
       uses: actions/upload-artifact@v2.2.2
       with:
+        name: jar-with-dependencies
         path: target/blob-tester-v12-*-jar-with-dependencies.jar
