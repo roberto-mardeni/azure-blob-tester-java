@@ -24,5 +24,15 @@ setx ENABLE_RANDOM_SLEEPS "true/false"
 $env:ENABLE_RANDOM_SLEEPS = "true/false"
 ```
 
+To include multiple file uploads, include a **FILE_UPLOAD_MULTIPLIER** environment variable with the numerical value like below.
+
+```bash
+setx FILE_UPLOAD_MULTIPLIER 3
+
+-- or --
+
+$env:FILE_UPLOAD_MULTIPLIER = 3
+```
+
 # packaging
 The project file has been customized to package with and without all dependencies for convenience.
