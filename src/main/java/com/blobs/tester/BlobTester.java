@@ -32,7 +32,7 @@ public class BlobTester {
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC)).buildClient();
 
         // Create a unique name for the container
-        String containerName = "quickstartblobs" + java.util.UUID.randomUUID();
+        String containerName = "blobtests" + java.util.UUID.randomUUID();
 
         // Create the container and return a container client object
         BlobContainerClient containerClient = blobServiceClient.createBlobContainer(containerName);
