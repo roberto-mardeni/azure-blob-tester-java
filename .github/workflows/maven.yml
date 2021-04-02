@@ -25,4 +25,4 @@ jobs:
     - name: Upload JARs
       uses: actions/upload-artifact@v2.2.2
       with:
-        path: targets/*.jar
+        path: target/*.jar
