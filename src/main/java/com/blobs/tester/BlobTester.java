@@ -1,12 +1,8 @@
 package com.blobs.tester;
 
-/**
- * Azure blob storage v12 SDK quickstart
- */
 import com.azure.core.http.policy.*;
 import com.azure.storage.blob.*;
 import com.azure.storage.blob.models.*;
-// import com.azure.storage.common.policy.RequestRetryOptions;
 
 import java.io.*;
 
