@@ -23,6 +23,7 @@ public class BlobTester {
     }
 
     public void PerformTest() {
+        Boolean doCleanUp = true;
         // Create a BlobServiceClient object which will be used to create a container
         // client
         BlobServiceClient blobServiceClient = new BlobServiceClientBuilder().connectionString(connectStr)
@@ -31,13 +32,21 @@ public class BlobTester {
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC)).buildClient();
 
         // Create a unique name for the container if not already provided
-        if (containerName == null)
+        if (containerName == null) {
             containerName = "blobtests" + java.util.UUID.randomUUID();
+        } else {
+            doCleanUp = false;
+        }
 
         // Create the container and return a container client object
-        BlobContainerClient containerClient = blobServiceClient.createBlobContainer(containerName);
+        BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(containerName);
 
-        System.out.println(String.format("\nCreated container %s", containerName));
+        try {
+            containerClient.create();
+            System.out.println(String.format("\nCreated container %s", containerName));
+        } catch (Exception ex) {
+            System.out.println(String.format("\nContainer already present %s", containerName));
+        }
 
         String[] files = new String[] { "small", "medium", "large", "verylarge" };
         String[] extensions = new String[] { "txt", "pdf" };
@@ -53,8 +62,9 @@ public class BlobTester {
 
                         BlobClient blobClient = containerClient.getBlobClient(blobName);
                         InputStream data = getClass().getResourceAsStream(path);
+                        
                         try {
-                            blobClient.upload(data, data.available());
+                            blobClient.upload(data, data.available(), true);
                         } catch (IOException ex) {
                             System.out.println("\tError uploading");
                         }
@@ -82,7 +92,7 @@ public class BlobTester {
         }
 
         // Clean up
-        if (this.mode == TestMode.UploadAndDownload) {
+        if (doCleanUp && this.mode == TestMode.UploadAndDownload) {
             System.out.println("\nPress the Enter key to begin clean up");
             System.console().readLine();
 
