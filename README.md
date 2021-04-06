@@ -44,5 +44,15 @@ setx TEST_MODE UploadAndDownload
 $env:TEST_MODE = "UploadAndDownload"
 ```
 
+By default a random container name would be used, to change to a fixed one add a **CONTAINER_NAME** environment variable with the desired name.
+
+```bash
+setx CONTAINER_NAME "container-name"
+
+-- or --
+
+$env:CONTAINER_NAME = "container-name"
+```
+
 # packaging
 The project file has been customized to package with and without all dependencies for convenience.
