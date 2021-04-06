@@ -1,6 +1,7 @@
 package com.blobs.tester;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class App {
     static Boolean randomSleepsEnabled = false;
@@ -40,8 +41,32 @@ public class App {
             connectStr = "UseDevelopmentStorage=true";
         }
 
-        System.out.println("\tAzure Storage Connection String: " + connectStr.substring(0, 21) + "...\n");
+        System.out.println("\tAzure Storage Connection String: " + connectStr.substring(0, 21) + "...");
 
-        new BlobTester(randomSleepsEnabled, fileUploadMultiplier, connectStr).PerformTest();
+        TestMode mode = TestMode.UploadAndDownload;
+
+        String modeString = System.getenv("TEST_MODE");
+
+        if (modeString != null) {
+            try {
+                mode = TestMode.valueOf(modeString);
+            } catch (IllegalArgumentException ex) {
+                String validValues = "";
+                for (TestMode m : TestMode.values()) {
+                    if (validValues != "") {
+                        validValues += ",";
+                    }
+                    validValues += m.toString();
+                }
+
+                System.err.println(
+                        "\tERROR: Invalid value for Test Mode " + modeString + ". Acceptable values: " + validValues);
+                return;
+            }
+        }
+
+        System.out.println("\tTest Mode: " + mode + "...\n");
+
+        new BlobTester(randomSleepsEnabled, fileUploadMultiplier, connectStr, mode).PerformTest();
     }
 }

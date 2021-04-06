@@ -2,7 +2,7 @@
 A sample demonstrating how to upload/download blobs to an Azure Storage Account using the Azure Java SDK v12
 
 # usage
-By default the application will use the [Azure Storage Emulator](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-emulator) connection string. 
+By default the application will use the [Azure Storage Emulator](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-emulator) connection string and will perform an upload and download of a sample of small, medium, large and very large files in TXT and PDF formats.
 
 If you want to test against an Azure Storage Account, provide an environment variable **AZURE_STORAGE_CONNECTION_STRING** with the connection string like below.
 
@@ -32,6 +32,16 @@ setx FILE_UPLOAD_MULTIPLIER 3
 -- or --
 
 $env:FILE_UPLOAD_MULTIPLIER = 3
+```
+
+The default behavior is to upload and download files, if you want to change it to either download or upload only include a **TEST_MODE** environment variable with the proper value to be one of "UploadAndDownload", "UploadOnly" or "DownloadOnly"
+
+```bash
+setx TEST_MODE UploadAndDownload
+
+-- or --
+
+$env:TEST_MODE = "UploadAndDownload"
 ```
 
 # packaging

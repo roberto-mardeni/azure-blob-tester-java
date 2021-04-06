@@ -10,11 +10,14 @@ public class BlobTester {
     Boolean randomSleepsEnabled = false;
     int fileUploadMultiplier = 1;
     String connectStr;
+    TestMode mode;
 
-    public BlobTester(Boolean randomSleepsEnabled, int fileUploadMultiplier, String azureConnectionString) {
+    public BlobTester(Boolean randomSleepsEnabled, int fileUploadMultiplier, String azureConnectionString,
+            TestMode mode) {
         this.randomSleepsEnabled = randomSleepsEnabled;
         this.fileUploadMultiplier = fileUploadMultiplier;
         this.connectStr = azureConnectionString;
+        this.mode = mode;
     }
 
     public void PerformTest() {
@@ -35,49 +38,56 @@ public class BlobTester {
 
         String[] files = new String[] { "small", "medium", "large", "verylarge" };
         String[] extensions = new String[] { "txt", "pdf" };
-        for (String file : files) {
-            for (String extension : extensions) {
-                for (int multiplier = 1; multiplier <= fileUploadMultiplier; multiplier++) {
-                    String path = "/files/" + file + "." + extension;
-                    String blobName = multiplier + "-" + file + "." + extension;
-                    System.out.println("\tUploading " + path + " to " + blobName);
 
-                    BlobClient blobClient = containerClient.getBlobClient(blobName);
-                    InputStream data = getClass().getResourceAsStream(path);
-                    try {
-                        blobClient.upload(data, data.available());
-                    } catch (IOException ex) {
-                        System.out.println("\tError uploading");
+        // Upload Files
+        if (this.mode == TestMode.UploadAndDownload || this.mode == TestMode.UploadOnly) {
+            for (String file : files) {
+                for (String extension : extensions) {
+                    for (int multiplier = 1; multiplier <= fileUploadMultiplier; multiplier++) {
+                        String path = "/files/" + file + "." + extension;
+                        String blobName = multiplier + "-" + file + "." + extension;
+                        System.out.println("\tUploading " + path + " to " + blobName);
+
+                        BlobClient blobClient = containerClient.getBlobClient(blobName);
+                        InputStream data = getClass().getResourceAsStream(path);
+                        try {
+                            blobClient.upload(data, data.available());
+                        } catch (IOException ex) {
+                            System.out.println("\tError uploading");
+                        }
+
+                        randomSleep();
                     }
-
-                    randomSleep();
                 }
             }
         }
 
-        // List and download the blob(s) in the container.
-        System.out.println(String.format("\n\nListing and downloading blobs... in %s", containerName));
+        if (this.mode == TestMode.UploadAndDownload || this.mode == TestMode.DownloadOnly) {
+            // List and download the blob(s) in the container.
+            System.out.println(String.format("\n\nListing and downloading blobs... in %s", containerName));
 
-        String localDownloadPath = System.getProperty("java.io.tmpdir");
+            String localDownloadPath = System.getProperty("java.io.tmpdir");
 
-        for (BlobItem blobItem : containerClient.listBlobs()) {
-            String blobName = blobItem.getName();
-            System.out.println("\tDownloading " + blobName);
-            BlobClient blobClient = containerClient.getBlobClient(blobName);
-            blobClient.downloadToFile(localDownloadPath + blobName, true);
+            for (BlobItem blobItem : containerClient.listBlobs()) {
+                String blobName = blobItem.getName();
+                System.out.println("\tDownloading " + blobName);
+                BlobClient blobClient = containerClient.getBlobClient(blobName);
+                blobClient.downloadToFile(localDownloadPath + blobName, true);
 
-            randomSleep();
+                randomSleep();
+            }
         }
 
         // Clean up
-        System.out.println("\nPress the Enter key to begin clean up");
-        System.console().readLine();
+        if (this.mode == TestMode.UploadAndDownload) {
+            System.out.println("\nPress the Enter key to begin clean up");
+            System.console().readLine();
 
-        System.out.println("Deleting blob container...");
-        containerClient.delete();
+            System.out.println("Deleting blob container...");
+            containerClient.delete();
+        }
 
         System.out.println("Done");
-
     }
 
     private void randomSleep() {
