@@ -1,7 +1,6 @@
 package com.blobs.tester;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class App {
     static Boolean randomSleepsEnabled = false;
@@ -65,8 +64,14 @@ public class App {
             }
         }
 
-        System.out.println("\tTest Mode: " + mode + "...\n");
+        System.out.println("\tTest Mode: " + mode + "...");
 
-        new BlobTester(randomSleepsEnabled, fileUploadMultiplier, connectStr, mode).PerformTest();
+        String containerName = System.getenv("CONTAINER_NAME");
+
+        System.out.println("\tContainer Name: " + containerName + "...");
+
+        System.out.println("\n");
+
+        new BlobTester(randomSleepsEnabled, fileUploadMultiplier, connectStr, mode, containerName).PerformTest();
     }
 }

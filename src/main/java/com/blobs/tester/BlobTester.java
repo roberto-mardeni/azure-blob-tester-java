@@ -11,13 +11,15 @@ public class BlobTester {
     int fileUploadMultiplier = 1;
     String connectStr;
     TestMode mode;
+    String containerName;
 
     public BlobTester(Boolean randomSleepsEnabled, int fileUploadMultiplier, String azureConnectionString,
-            TestMode mode) {
+            TestMode mode, String containerName) {
         this.randomSleepsEnabled = randomSleepsEnabled;
         this.fileUploadMultiplier = fileUploadMultiplier;
         this.connectStr = azureConnectionString;
         this.mode = mode;
+        this.containerName = containerName;
     }
 
     public void PerformTest() {
@@ -28,8 +30,9 @@ public class BlobTester {
                 // .addPolicy(new RetryPolicy())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC)).buildClient();
 
-        // Create a unique name for the container
-        String containerName = "blobtests" + java.util.UUID.randomUUID();
+        // Create a unique name for the container if not already provided
+        if (containerName == null)
+            containerName = "blobtests" + java.util.UUID.randomUUID();
 
         // Create the container and return a container client object
         BlobContainerClient containerClient = blobServiceClient.createBlobContainer(containerName);
