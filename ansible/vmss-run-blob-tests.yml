@@ -22,4 +22,4 @@
       shell: "java -jar /home/{{ admin_username }}/{{ jar_file }}"
       register: results
     - debug:
-        var: results.stdout
+        var: results.stdout_lines
