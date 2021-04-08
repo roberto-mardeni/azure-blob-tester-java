@@ -21,7 +21,8 @@
 
     - name: Copy Azure Stack Certificate
       copy:
-        remote_src: "{{ cert_src }}"
+        src: "{{ cert_src }}"
+        remote_src: yes
         dest: "/home/{{ admin_username }}/{{ cert_file }}"
         force: yes
         mode: 0755
