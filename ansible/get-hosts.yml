@@ -1,0 +1,22 @@
+# get-hosts.yml
+---
+- name: Get facts for all Public IPs within a resource groups
+  azure.azcollection.azure_rm_virtualmachinescalesetinstance_info:
+    resource_group: "{{ resource_group }}"
+    name: "{{ vmss_name }}"
+    format: curated
+  register: instances
+
+- debug:
+    vars: instances
+
+# - name: Add all hosts
+#   add_host:
+#     groups: scalesethosts
+#     hostname: "{{ output_ip_address.publicipaddresses[0].ip_address }}_{{ item.properties.frontendPort }}"
+#     ansible_host: "{{ output_ip_address.publicipaddresses[0].ip_address }}"
+#     ansible_port: "{{ item.properties.frontendPort }}"
+#     ansible_ssh_user: "{{ admin_username }}"
+#     ansible_ssh_pass: "{{ admin_password }}"
+#   with_items:
+#     - "{{ output.ansible_info.azure_loadbalancers[0].properties.inboundNatRules }}"

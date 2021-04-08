@@ -1,7 +1,7 @@
 # vmss-setup-deploy.yml
 ---
 - name: "VMSS Setup & Deploy Artifacts"
-  hosts: control
+  hosts: nodes
   become: yes
   vars:
     cert_src: "{{ cert_src }}"
