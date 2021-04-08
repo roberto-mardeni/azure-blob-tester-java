@@ -6,8 +6,12 @@ name: Java CI with Maven
 on:
   push:
     branches: [ main ]
+    paths-ignore:
+    - 'ansible/**'
   pull_request:
     branches: [ main ]
+    paths-ignore:
+    - 'ansible/**'
 
 jobs:
   build:
