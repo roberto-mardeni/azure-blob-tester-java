@@ -1,8 +1,7 @@
 # vmss-setup-deploy.yml
 ---
 - name: "VMSS Setup & Deploy Artifacts"
-  hosts: 127.0.0.1
-  connection: local
+  hosts: control
   vars:
     cert_src: "{{ cert_src }}"
     cert_file: "{{ cert_file }}"

@@ -1,8 +1,7 @@
 # vmss-run-blob-tests.yml
 ---
 - name: "Run Blob Tests"
-  hosts: 127.0.0.1
-  connection: local
+  hosts: control
   vars:
     admin_username: sysadmin
     jar_file: "blob-tester-v12-1.0-jar-with-dependencies.jar"
