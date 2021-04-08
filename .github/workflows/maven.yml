@@ -28,9 +28,3 @@ jobs:
       with:
         name: jar-with-dependencies
         path: target/blob-tester-v12-*-jar-with-dependencies.jar
-    - name: Create a Release
-      uses: elgohr/Github-Release-Action@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        args: "New Release"
