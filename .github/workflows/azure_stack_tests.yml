@@ -13,6 +13,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Setup Machine
-        run: ansible-playbook ansible/vmss-setup-deploy.yml
+        chdir: ansible
+        run: |
+          ansible-playbook vmss-setup-deploy.yml --extra-vars "cert_src={{ secrets.CERT_SRC }} cert_file={{ secrets.CERT_FILE }} admin_password={{ secrets.ADMIN_PASSWORD }}"
       - name: Run Tests
-        run: ansible-playbook ansible/vmss-run-blob-tests.yml
+        chdir: ansible
+        run: |
+          ansible-playbook vmss-run-blob-tests.yml --extra-vars "AZURE_STORAGE_CONNECTION_STRING={{ secrets.PREMIUM_STORAGE_CONNECTION_STRING }}"
