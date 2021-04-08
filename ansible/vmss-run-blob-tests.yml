@@ -20,4 +20,6 @@
         CONTAINER_NAME: "blob-tests"
         DOWNLOAD_PATH: "/home/{{ admin_username }}/{{ download_path }}/"
       shell: "java -jar /home/{{ admin_username }}/{{ jar_file }}"
-      register: output
+      register: results
+    - debug:
+        var: results.stdout
