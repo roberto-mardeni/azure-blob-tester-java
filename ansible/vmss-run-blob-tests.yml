@@ -9,10 +9,10 @@
     storage_connection_string: "{{ AZURE_STORAGE_CONNECTION_STRING }}"
   tasks:
     - name: Run Blob Tests
-      chdir: "/home/{{ admin_username }}/"
       shell: |
+        cd /home/{{ admin_username }}/
         export AZURE_STORAGE_CONNECTION_STRING="{{ storage_connection_string }}"
         export TEST_MODE=DownloadOnly
         export DOWNLOAD_PATH="/home/{{ admin_username }}/{{ download_path }}"
-        mkdir "/home/{{ admin_username }}/{{ download_path }}"
+        mkdir {{ download_path }}
         java -jar {{ jar_file }}
