@@ -39,6 +39,7 @@
     - name: Copy JAR ZIP file
       copy:
         src: "{{ zip_src }}"
+        remote_src: yes
         dest: "/home/{{ admin_username }}/{{ zip_file }}"
         force: yes
         mode: 0755
