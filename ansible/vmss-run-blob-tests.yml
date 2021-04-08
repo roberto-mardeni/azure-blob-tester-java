@@ -1,0 +1,15 @@
+- hosts: localhost
+  vars:
+    admin_username: sysadmin
+    jar_file: "blob-tester-v12-1.0-jar-with-dependencies.jar"
+    download_path: "downloads"
+    storage_connection_string: "{{ AZURE_STORAGE_CONNECTION_STRING }}"
+
+- name: Run Blob Tests
+  shell: |
+    export AZURE_STORAGE_CONNECTION_STRING="{{ storage_connection_string }}"
+    export TEST_MODE=DownloadOnly
+    export DOWNLOAD_PATH="/home/{{ admin_username }}/{{ download_path }}"
+    mkdir "/home/{{ admin_username }}/{{ download_path }}"
+    java -jar {{ jar_file }}
+  chdir: "/home/{{ admin_username }}/"
