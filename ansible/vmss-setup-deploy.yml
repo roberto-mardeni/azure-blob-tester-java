@@ -20,11 +20,12 @@
         update_cache: yes
 
     - name: Copy Azure Stack Certificate
-      shell: |
-        if [ -f "{{ cert_file }}" ] ; then
-            rm "{{ cert_file }}"
-        fi
-        wget --no-check-certificate {{ cert_src }} > {{ cert_file }}
+      get_url:
+        url: "{{ cert_src }}"
+        dest: "/home/{{ admin_username }}/{{ cert_file }}"
+        validate_certs: no
+        mode: 0755
+        force: yes
 
     - name: Install Azure Stack Certificate in Java Store
       community.general.java_cert:
@@ -37,12 +38,11 @@
         trust_cacert: yes
 
     - name: Copy JAR ZIP file
-      copy:
-        src: "{{ zip_src }}"
-        remote_src: yes
+      get_url:
+        url: "{{ zip_src }}"
         dest: "/home/{{ admin_username }}/{{ zip_file }}"
-        force: yes
         mode: 0755
+        force: yes
 
     - name: Unzip JAR ZIP file
       args:
