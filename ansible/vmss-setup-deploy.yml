@@ -8,7 +8,7 @@
     cert_file: "{{ cert_file }}"
     admin_username: sysadmin
     admin_password: "{{ admin_password }}"
-    zip_src: "https://github.com/roberto-mardeni/azure-blob-tester-java/releases/download/1.0/jar-with-dependencies.zip0"
+    zip_src: "https://github.com/roberto-mardeni/azure-blob-tester-java/releases/download/1.0/jar-with-dependencies.zip"
     zip_file: "jar-with-dependencies.zip"
     jar_file: "blob-tester-v12-1.0-jar-with-dependencies.jar"
   tasks:
