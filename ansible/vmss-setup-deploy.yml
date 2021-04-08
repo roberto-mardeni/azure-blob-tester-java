@@ -26,18 +26,18 @@
         force: yes
         mode: 0755
 
-    - name: Install Azure Stack Certificate in Java Store
-      shell: |
-        keytool -importcert -file {{ cert_file }} -alias ASH -keystore /etc/ssl/certs/java/cacerts -storepass changeit
+    # - name: Install Azure Stack Certificate in Java Store
+    #   shell: |
+    #     keytool -importcert -file {{ cert_file }} -alias ASH -keystore /etc/ssl/certs/java/cacerts -storepass changeit
 
-    - name: Copy JAR ZIP file
-      copy:
-        src: "{{ zip_src }}"
-        dest: "/home/{{ admin_username }}/{{ zip_file }}"
-        force: yes
-        mode: 0755
+    # - name: Copy JAR ZIP file
+    #   copy:
+    #     src: "{{ zip_src }}"
+    #     dest: "/home/{{ admin_username }}/{{ zip_file }}"
+    #     force: yes
+    #     mode: 0755
 
-    - name: Unzip JAR ZIP file
-      chdir: "/home/{{ admin_username }}/"
-      shell: |
-        unzip {{ zip_file }}
+    # - name: Unzip JAR ZIP file
+    #   chdir: "/home/{{ admin_username }}/"
+    #   shell: |
+    #     unzip {{ zip_file }}
