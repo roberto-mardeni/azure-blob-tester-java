@@ -6,12 +6,9 @@ name: Java CI with Maven
 on:
   push:
     branches: [ main ]
-    paths-ignore:
-    - 'ansible/**'
-  pull_request:
-    branches: [ main ]
-    paths-ignore:
-    - 'ansible/**'
+    paths:
+    - '.github/workflows/maven.yml'
+    - 'src/**'
 
 jobs:
   build:
