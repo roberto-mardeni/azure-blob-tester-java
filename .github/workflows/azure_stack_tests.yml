@@ -8,7 +8,7 @@ on:
     - 'ansible/**'
 
 jobs:
-  build:
+  setup-and-test:
     runs-on: ash-vm
     steps:
       - uses: actions/checkout@v2

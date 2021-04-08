@@ -38,6 +38,7 @@
         mode: 0755
 
     - name: Unzip JAR ZIP file
-      chdir: "/home/{{ admin_username }}/"
+      args:
+        chdir: "/home/{{ admin_username }}/"
       shell: |
         unzip {{ zip_file }}
