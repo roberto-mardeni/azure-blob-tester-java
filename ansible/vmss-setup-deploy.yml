@@ -24,7 +24,7 @@
         url: "{{ cert_src }}"
         dest: "/home/{{ admin_username }}/{{ cert_file }}"
         validate_certs: no
-        mode: 0755
+        mode: 0644
         force: yes
 
     - name: Install Azure Stack Certificate in Java Store
@@ -41,7 +41,7 @@
       ansible.builtin.get_url:
         url: "{{ zip_src }}"
         dest: "/home/{{ admin_username }}/{{ zip_file }}"
-        mode: 0755
+        mode: 0644
         force: yes
 
     - name: Unzip JAR ZIP file
