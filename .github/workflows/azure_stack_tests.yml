@@ -15,8 +15,8 @@ jobs:
       - name: Setup Machine
         working-directory: ansible
         run: |
-          ansible-playbook -i inventory vmss-setup-deploy.yml --extra-vars "cert_src=${{ secrets.CERT_SRC }} cert_file=${{ secrets.CERT_FILE }} admin_password=${{ secrets.ADMIN_PASSWORD }}"
+          ansible-playbook -i inventory vmss-setup-deploy.yml --extra-vars "cert_src=${{ secrets.CERT_SRC }} cert_file=${{ secrets.CERT_FILE }} ansible_password=${{ secrets.ADMIN_PASSWORD }}"
       - name: Run Tests
         working-directory: ansible
         run: |
-          ansible-playbook -i inventory vmss-run-blob-tests.yml --extra-vars "AZURE_STORAGE_CONNECTION_STRING=${{ secrets.PREMIUM_STORAGE_CONNECTION_STRING }} admin_password=${{ secrets.ADMIN_PASSWORD }}"
+          ansible-playbook -i inventory vmss-run-blob-tests.yml --extra-vars "AZURE_STORAGE_CONNECTION_STRING=${{ secrets.PREMIUM_STORAGE_CONNECTION_STRING }} ansible_password=${{ secrets.ADMIN_PASSWORD }}"

@@ -3,15 +3,15 @@
 - name: "Run Blob Tests"
   hosts: nodes
   vars:
-    admin_username: sysadmin
-    admin_password: "{{ admin_password }}"
+    ansible_username: sysadmin
+    ansible_password: "{{ ansible_password }}"
     jar_file: "blob-tester-v12-1.0-jar-with-dependencies.jar"
     download_path: "downloads"
     storage_connection_string: "{{ AZURE_STORAGE_CONNECTION_STRING }}"
   tasks:
     - name: Create Downloads directory if it does not exist
       ansible.builtin.file:
-        path: "/home/{{ admin_username }}/{{ download_path }}"
+        path: "/home/{{ ansible_username }}/{{ download_path }}"
         state: directory
         mode: 0755
     - name: Run Blob Tests
@@ -19,8 +19,8 @@
         AZURE_STORAGE_CONNECTION_STRING: "{{ storage_connection_string }}"
         TEST_MODE: "DownloadOnly"
         CONTAINER_NAME: "blob-tests"
-        DOWNLOAD_PATH: "/home/{{ admin_username }}/{{ download_path }}/"
-      shell: "java -jar /home/{{ admin_username }}/{{ jar_file }}"
+        DOWNLOAD_PATH: "/home/{{ ansible_username }}/{{ download_path }}/"
+      shell: "java -jar /home/{{ ansible_username }}/{{ jar_file }}"
       register: results
     - debug:
         var: results.stdout_lines

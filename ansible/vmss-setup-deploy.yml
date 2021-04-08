@@ -6,8 +6,8 @@
   vars:
     cert_src: "{{ cert_src }}"
     cert_file: "{{ cert_file }}"
-    admin_username: sysadmin
-    admin_password: "{{ admin_password }}"
+    ansible_username: sysadmin
+    ansible_password: "{{ ansible_password }}"
     zip_src: "https://github.com/roberto-mardeni/azure-blob-tester-java/releases/download/1.0/jar-with-dependencies.zip"
     zip_file: "jar-with-dependencies.zip"
     jar_file: "blob-tester-v12-1.0-jar-with-dependencies.jar"
@@ -22,7 +22,7 @@
     - name: Copy Azure Stack Certificate
       ansible.builtin.get_url:
         url: "{{ cert_src }}"
-        dest: "/home/{{ admin_username }}/{{ cert_file }}"
+        dest: "/home/{{ ansible_username }}/{{ cert_file }}"
         validate_certs: no
         mode: 0644
         force: yes
@@ -30,7 +30,7 @@
     - name: Install Azure Stack Certificate in Java Store
       community.general.java_cert:
         cert_alias: "ASH"
-        cert_path: "/home/{{ admin_username }}/{{ cert_file }}"
+        cert_path: "/home/{{ ansible_username }}/{{ cert_file }}"
         keystore_path: "/etc/ssl/certs/java/cacerts"
         keystore_pass: changeit
         state: present
@@ -39,12 +39,12 @@
     - name: Copy JAR ZIP file
       ansible.builtin.get_url:
         url: "{{ zip_src }}"
-        dest: "/home/{{ admin_username }}/{{ zip_file }}"
+        dest: "/home/{{ ansible_username }}/{{ zip_file }}"
         mode: 0644
         force: yes
 
     - name: Unzip JAR ZIP file
       ansible.builtin.unarchive:
-        src: "/home/{{ admin_username }}/{{ zip_file }}"
-        dest: "/home/{{ admin_username }}/"
+        src: "/home/{{ ansible_username }}/{{ zip_file }}"
+        dest: "/home/{{ ansible_username }}/"
         mode: 0755
