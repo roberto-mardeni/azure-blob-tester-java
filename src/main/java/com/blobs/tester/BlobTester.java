@@ -12,14 +12,16 @@ public class BlobTester {
     String connectStr;
     TestMode mode;
     String containerName;
+    String localDownloadPath;
 
     public BlobTester(Boolean randomSleepsEnabled, int fileUploadMultiplier, String azureConnectionString,
-            TestMode mode, String containerName) {
+            TestMode mode, String containerName, String localDownloadPath) {
         this.randomSleepsEnabled = randomSleepsEnabled;
         this.fileUploadMultiplier = fileUploadMultiplier;
         this.connectStr = azureConnectionString;
         this.mode = mode;
         this.containerName = containerName;
+        this.localDownloadPath = localDownloadPath;
     }
 
     public void PerformTest() {
@@ -79,13 +81,11 @@ public class BlobTester {
             // List and download the blob(s) in the container.
             System.out.println(String.format("\n\nListing and downloading blobs... in %s", containerName));
 
-            String localDownloadPath = System.getProperty("java.io.tmpdir");
-
             for (BlobItem blobItem : containerClient.listBlobs()) {
                 String blobName = blobItem.getName();
                 System.out.println("\tDownloading " + blobName);
                 BlobClient blobClient = containerClient.getBlobClient(blobName);
-                blobClient.downloadToFile(localDownloadPath + blobName, true);
+                blobClient.downloadToFile(this.localDownloadPath + blobName, true);
 
                 randomSleep();
             }

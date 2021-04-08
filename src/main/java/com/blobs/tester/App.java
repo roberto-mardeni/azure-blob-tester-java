@@ -70,8 +70,17 @@ public class App {
 
         System.out.println("\tContainer Name: " + containerName + "...");
 
+        String localDownloadPath = System.getenv("DOWNLOAD_PATH");
+
+        if (localDownloadPath == null || localDownloadPath == "") {
+            localDownloadPath = System.getProperty("java.io.tmpdir");
+        }
+
+        System.out.println("\tLocal Download Path: " + localDownloadPath);
+
         System.out.println("\n");
 
-        new BlobTester(randomSleepsEnabled, fileUploadMultiplier, connectStr, mode, containerName).PerformTest();
+        new BlobTester(randomSleepsEnabled, fileUploadMultiplier, connectStr, mode, containerName, localDownloadPath)
+                .PerformTest();
     }
 }

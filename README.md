@@ -54,5 +54,15 @@ setx CONTAINER_NAME "container-name"
 $env:CONTAINER_NAME = "container-name"
 ```
 
+By default files will download to the temp directory of the current user, to change add a **DOWNLOAD_PATH** environment variable with the desired path.
+
+```bash
+setx DOWNLOAD_PATH "C:\downloads\"
+
+-- or --
+
+$env:DOWNLOAD_PATH = "C:\downloads\"
+```
+
 # packaging
 The project file has been customized to package with and without all dependencies for convenience.
