@@ -27,8 +27,14 @@
         wget --no-check-certificate {{ cert_src }} > {{ cert_file }}
 
     - name: Install Azure Stack Certificate in Java Store
-      shell: |
-        keytool -importcert -file {{ cert_file }} -alias ASH -keystore /etc/ssl/certs/java/cacerts -storepass changeit -noprompt
+      community.general.java_cert:
+        cert_alias: "ASH"
+        cert_path: "/home/{{ admin_username }}/{{ cert_file }}"
+        keystore_path: "/etc/ssl/certs/java/cacerts"
+        keystore_type: "JCEKS"
+        keystore_pass: changeit
+        state: present
+        trust_cacert: yes
 
     - name: Copy JAR ZIP file
       copy:
