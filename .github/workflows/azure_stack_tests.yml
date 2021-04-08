@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ash-vm
     steps:
       - uses: actions/checkout@v2
       - name: Setup Machine
