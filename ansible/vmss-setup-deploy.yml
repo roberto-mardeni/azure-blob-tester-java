@@ -13,14 +13,14 @@
     jar_file: "blob-tester-v12-1.0-jar-with-dependencies.jar"
   tasks:
     - name: Install APT Packages
-      apt:
+      ansible.builtin.apt:
         pkg:
         - default-jre
         - unzip
         update_cache: yes
 
     - name: Copy Azure Stack Certificate
-      get_url:
+      ansible.builtin.get_url:
         url: "{{ cert_src }}"
         dest: "/home/{{ admin_username }}/{{ cert_file }}"
         validate_certs: no
@@ -38,14 +38,14 @@
         trust_cacert: yes
 
     - name: Copy JAR ZIP file
-      get_url:
+      ansible.builtin.get_url:
         url: "{{ zip_src }}"
         dest: "/home/{{ admin_username }}/{{ zip_file }}"
         mode: 0755
         force: yes
 
     - name: Unzip JAR ZIP file
-      args:
-        chdir: "/home/{{ admin_username }}/"
-      shell: |
-        unzip {{ zip_file }}
+      ansible.builtin.unarchive:
+        src: "/home/{{ admin_username }}/{{ zip_file }}"
+        dest: "/home/{{ admin_username }}/"
+        mode: 0755
