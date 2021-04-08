@@ -17,6 +17,7 @@
         - default-jre
         - unzip
         update_cache: yes
+        become_user: root
 
     # - name: Copy Azure Stack Certificate
     #   copy:
