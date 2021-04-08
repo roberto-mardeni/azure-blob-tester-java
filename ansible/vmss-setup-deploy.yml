@@ -2,6 +2,7 @@
 ---
 - name: "VMSS Setup & Deploy Artifacts"
   hosts: control
+  become: yes
   vars:
     cert_src: "{{ cert_src }}"
     cert_file: "{{ cert_file }}"
@@ -17,7 +18,6 @@
         - default-jre
         - unzip
         update_cache: yes
-        become_user: root
 
     # - name: Copy Azure Stack Certificate
     #   copy:
