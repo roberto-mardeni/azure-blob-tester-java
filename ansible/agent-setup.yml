@@ -1,0 +1,10 @@
+# sudo apt-get update
+# sudo apt-get install default-jre -y
+# sudo apt-get install unzip -y
+# sudo apt install software-properties-common -y
+# sudo apt-add-repository --yes --update ppa:ansible/ansible
+# sudo apt install ansible -y
+# ansible-galaxy collection install community.general
+# ansible-galaxy collection install azure.azcollection
+# Add [control] group to /etc/ansible/hosts
+# Add agentvm node to /etc/ansible/hosts
