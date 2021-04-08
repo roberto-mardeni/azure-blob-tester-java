@@ -32,7 +32,6 @@
         cert_alias: "ASH"
         cert_path: "/home/{{ admin_username }}/{{ cert_file }}"
         keystore_path: "/etc/ssl/certs/java/cacerts"
-        keystore_type: "JKS"
         keystore_pass: changeit
         state: present
         trust_cacert: yes
