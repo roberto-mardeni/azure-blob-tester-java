@@ -18,5 +18,5 @@
         AZURE_STORAGE_CONNECTION_STRING: "{{ storage_connection_string }}"
         TEST_MODE: "DownloadOnly"
         CONTAINER_NAME: "blob-tests"
-        DOWNLOAD_PATH: "/home/{{ admin_username }}/{{ download_path }}"
+        DOWNLOAD_PATH: "/home/{{ admin_username }}/{{ download_path }}/"
       shell: "java -jar /home/{{ admin_username }}/{{ jar_file }}"
