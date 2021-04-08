@@ -2,8 +2,8 @@
 agentvm
 
 [nodes]
-10.0.2.6
-10.0.2.7
-10.0.2.8
-10.0.2.9
-10.0.2.10
+sysadmin@10.0.2.6
+sysadmin@10.0.2.7
+sysadmin@10.0.2.8
+sysadmin@10.0.2.9
+sysadmin@10.0.2.10
