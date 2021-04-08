@@ -28,7 +28,7 @@
 
     - name: Install Azure Stack Certificate in Java Store
       shell: |
-        keytool -importcert -file {{ cert_file }} -alias ASH -keystore /etc/ssl/certs/java/cacerts -storepass changeit
+        keytool -importcert -file {{ cert_file }} -alias ASH -keystore /etc/ssl/certs/java/cacerts -storepass changeit -noprompt
 
     - name: Copy JAR ZIP file
       copy:
