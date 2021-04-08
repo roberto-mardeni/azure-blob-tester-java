@@ -1,4 +1,8 @@
-- hosts: localhost
+# vmss-setup-deploy.yml
+---
+- name: "VMSS Setup & Deploy Artifacts"
+  hosts: 127.0.0.1
+  connection: local
   vars:
     cert_src: "{{ cert_src }}"
     cert_file: "{{ cert_file }}"
@@ -7,31 +11,31 @@
     zip_src: "https://github.com/roberto-mardeni/azure-blob-tester-java/suites/2449068608/artifacts/52488510"
     zip_file: "jar-with-dependencies.zip"
     jar_file: "blob-tester-v12-1.0-jar-with-dependencies.jar"
+  tasks:
+    - name: Install APT Packages
+      apt:
+        pkg:
+        - default-jre
+        - unzip
+        update_cache: yes
 
-- name: Install APT Packages
-  apt:
-    pkg:
-    - default-jre
-    - unzip
-    update_cache: yes
+    - name: Copy Azure Stack Certificate
+      copy:
+        src: "{{ cert_src }}"
+        dest: "/home/{{ admin_username }}/{{ cert_file }}"
+        force: yes
+        mode: 0755
 
-- name: Copy Azure Stack Certificate
-  copy:
-    src: "{{ cert_src }}"
-    dest: "/home/{{ admin_username }}/{{ cert_file }}"
-    force: yes
-    mode: 0755
+    - name: Install Azure Stack Certificate in Java Store
+      shell: "keytool -importcert -file {{ cert_file }} -alias ASH -keystore /etc/ssl/certs/java/cacerts -storepass changeit"
 
-- name: Install Azure Stack Certificate in Java Store
-  shell: "keytool -importcert -file {{ cert_file }} -alias ASH -keystore /etc/ssl/certs/java/cacerts -storepass changeit"
+    - name: Copy JAR ZIP file
+      copy:
+        src: "{{ zip_src }}"
+        dest: "/home/{{ admin_username }}/{{ zip_file }}"
+        force: yes
+        mode: 0755
 
-- name: Copy JAR ZIP file
-  copy:
-    src: "{{ zip_src }}"
-    dest: "/home/{{ admin_username }}/{{ zip_file }}"
-    force: yes
-    mode: 0755
-
-- name: Unzip JAR ZIP file
-  shell: "unzip {{ zip_file }}"
-  chdir: "/home/{{ admin_username }}/"
+    - name: Unzip JAR ZIP file
+      shell: "unzip {{ zip_file }}"
+      chdir: "/home/{{ admin_username }}/"
