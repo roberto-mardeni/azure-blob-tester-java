@@ -9,3 +9,4 @@
 # Add [control] group to /etc/ansible/hosts
 # Add agentvm node to /etc/ansible/hosts
 # sudo pip install -r requirements-azure.txt
+# sudo apt-get install sshpass
