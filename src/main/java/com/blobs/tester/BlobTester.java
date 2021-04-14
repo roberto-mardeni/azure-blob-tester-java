@@ -47,7 +47,7 @@ public class BlobTester {
             containerClient.create();
             System.out.println(String.format("\nCreated container %s", containerName));
         } catch (Exception ex) {
-            System.out.println(String.format("\nContainer already present %s", containerName));
+            System.err.println(String.format("\nContainer already present %s", containerName));
         }
 
         String[] files = new String[] { "small", "medium", "large", "verylarge" };
@@ -64,11 +64,11 @@ public class BlobTester {
 
                         BlobClient blobClient = containerClient.getBlobClient(blobName);
                         InputStream data = getClass().getResourceAsStream(path);
-                        
+
                         try {
                             blobClient.upload(data, data.available(), true);
                         } catch (IOException ex) {
-                            System.out.println("\tError uploading");
+                            System.err.println("\tError uploading");
                         }
 
                         randomSleep();
@@ -85,7 +85,12 @@ public class BlobTester {
                 String blobName = blobItem.getName();
                 System.out.println("\tDownloading " + blobName);
                 BlobClient blobClient = containerClient.getBlobClient(blobName);
-                blobClient.downloadToFile(this.localDownloadPath + blobName, true);
+
+                try {
+                    blobClient.downloadToFile(this.localDownloadPath + blobName, true);
+                } catch (UncheckedIOException ex) {
+                    System.err.println("\tError downloading");
+                }
 
                 randomSleep();
             }
@@ -113,7 +118,7 @@ public class BlobTester {
                 System.out.println("\tSleeping for " + sleepTime);
                 Thread.sleep(sleepTime);
             } catch (Exception e) {
-                System.out.println(e);
+                System.err.println(e);
             }
         }
     }
