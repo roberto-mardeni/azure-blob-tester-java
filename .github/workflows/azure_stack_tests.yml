@@ -9,7 +9,7 @@ on:
     - 'ansible/inventory'
 
 jobs:
-  prep-for-test:
+  setup-and-run:
     runs-on: bellevue-ash-vm
     steps:
       - uses: actions/checkout@v2
