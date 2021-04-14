@@ -5,7 +5,7 @@ on:
     branches: [ main ]
     paths:
     - '.github/workflows/azure_stack_upload_files.yml'
-    - 'ansible/**'
+    - 'ansible/agent-*.yml'
 
 jobs:
   upload-files:
