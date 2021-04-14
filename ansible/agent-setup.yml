@@ -22,6 +22,7 @@
     zip_src: "https://github.com/roberto-mardeni/azure-blob-tester-java/releases/download/1.0/jar-with-dependencies.zip"
     zip_file: "jar-with-dependencies.zip"
     jar_file: "blob-tester-v12-1.0-jar-with-dependencies.jar"
+    download_path: "downloads"
   tasks:
     - name: Install APT Packages
       ansible.builtin.apt:
