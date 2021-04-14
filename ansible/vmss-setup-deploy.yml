@@ -4,8 +4,6 @@
   hosts: nodes
   become: yes
   vars:
-    cert_src: "{{ cert_src }}"
-    cert_file: "{{ cert_file }}"
     ansible_username: sysadmin
     ansible_password: "{{ ansible_password }}"
     zip_src: "https://github.com/roberto-mardeni/azure-blob-tester-java/releases/download/1.0/jar-with-dependencies.zip"
@@ -18,23 +16,6 @@
         - default-jre
         - unzip
         update_cache: yes
-
-    - name: Copy Azure Stack Certificate
-      ansible.builtin.get_url:
-        url: "{{ cert_src }}"
-        dest: "/home/{{ ansible_username }}/{{ cert_file }}"
-        validate_certs: no
-        mode: 0644
-        force: yes
-
-    - name: Install Azure Stack Certificate in Java Store
-      community.general.java_cert:
-        cert_alias: "ASH"
-        cert_path: "/home/{{ ansible_username }}/{{ cert_file }}"
-        keystore_path: "/etc/ssl/certs/java/cacerts"
-        keystore_pass: changeit
-        state: present
-        trust_cacert: yes
 
     - name: Copy JAR ZIP file
       ansible.builtin.get_url:
