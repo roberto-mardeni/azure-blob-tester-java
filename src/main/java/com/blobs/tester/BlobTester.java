@@ -44,8 +44,10 @@ public class BlobTester {
         BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(containerName);
 
         try {
-            containerClient.create();
-            System.out.println(String.format("\nCreated container %s", containerName));
+            if (!containerClient.exists()) {
+                containerClient.create();
+                System.out.println(String.format("\nCreated container %s", containerName));
+            }
         } catch (Exception ex) {
             System.err.println(String.format("\nContainer already present %s", containerName));
         }
