@@ -6,6 +6,7 @@ on:
     paths:
     - '.github/workflows/azure_stack_tests.yml'
     - 'ansible/vmss-*.yml'
+    - 'ansible/inventory'
 
 jobs:
   prep-for-test:
