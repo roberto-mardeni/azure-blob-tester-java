@@ -3,10 +3,10 @@ agent-vm
 
 [nodes]
 node1 ansible_host=10.1.2.4
-# 10.1.2.5
-# 10.1.2.6
-# 10.1.2.7
-# 10.1.2.8
+node2 ansible_host=10.1.2.5
+node3 ansible_host=10.1.2.6
+node4 ansible_host=10.1.2.7
+node5 ansible_host=10.1.2.8
 
 [nodes:vars]
 ansible_connection=ssh
