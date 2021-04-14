@@ -10,5 +10,4 @@ node1 ansible_host=10.1.2.4
 
 [nodes:vars]
 ansible_connection=ssh
-ansible_user=sysadmin
 ansible_ssh_user=sysadmin
