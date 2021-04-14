@@ -13,10 +13,6 @@ jobs:
     runs-on: bellevue-ash-vm
     steps:
       - uses: actions/checkout@v2
-      # - name: Add password to inventory
-      #   working-directory: ansible
-      #   run: |
-      #     echo "ansible_ssh_pass=${{ secrets.ADMIN_PASSWORD }}" >> inventory
       - name: Setup Processing Nodes
         working-directory: ansible
         run: |
