@@ -14,6 +14,7 @@
         path: "/home/{{ ansible_username }}/{{ download_path }}"
         state: directory
         mode: 0755
+
     - name: Run Blob Tests
       environment:
         AZURE_STORAGE_CONNECTION_STRING: "{{ storage_connection_string }}"
@@ -22,5 +23,6 @@
         DOWNLOAD_PATH: "/home/{{ ansible_username }}/{{ download_path }}/"
       shell: "java -jar /home/{{ ansible_username }}/{{ jar_file }}"
       register: results
+
     - debug:
         var: results.stdout_lines

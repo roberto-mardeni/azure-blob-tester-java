@@ -1,0 +1,18 @@
+name: Upload Blobs to Storage Account in Azure Stack Hub
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+    - '.github/workflows/azure_stack_upload_files.yml'
+    - 'ansible/**'
+
+jobs:
+  upload-files:
+    runs-on: bellevue-ash-vm
+    steps:
+      - uses: actions/checkout@v2
+      - name: Upload Files
+        working-directory: ansible
+        run: |
+          ansible-playbook --connection=local agent-setup.yml --extra-vars "AZURE_STORAGE_CONNECTION_STRING=${{ secrets.PREMIUM_STORAGE_CONNECTION_STRING }} ansible_password=${{ secrets.ADMIN_PASSWORD }}"
