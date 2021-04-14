@@ -23,6 +23,7 @@
     zip_file: "jar-with-dependencies.zip"
     jar_file: "blob-tester-v12-1.0-jar-with-dependencies.jar"
     download_path: "downloads"
+    storage_connection_string: "{{ AZURE_STORAGE_CONNECTION_STRING }}"
   tasks:
     - name: Install APT Packages
       ansible.builtin.apt:
