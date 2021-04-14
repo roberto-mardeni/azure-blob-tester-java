@@ -4,8 +4,8 @@
   hosts: nodes
   become: yes
   vars:
-    ansible_username: sysadmin
-    ansible_password: "{{ ansible_password }}"
+    ansible_ssh_user: sysadmin
+    ansible_ssh_pass: "{{ ansible_password }}"
     zip_src: "https://github.com/roberto-mardeni/azure-blob-tester-java/releases/download/1.0/jar-with-dependencies.zip"
     zip_file: "jar-with-dependencies.zip"
     jar_file: "blob-tester-v12-1.0-jar-with-dependencies.jar"
@@ -20,12 +20,12 @@
     - name: Copy JAR ZIP file
       ansible.builtin.get_url:
         url: "{{ zip_src }}"
-        dest: "/home/{{ ansible_username }}/{{ zip_file }}"
+        dest: "/home/{{ ansible_ssh_user }}/{{ zip_file }}"
         mode: 0644
         force: yes
 
     - name: Unzip JAR ZIP file
       ansible.builtin.unarchive:
-        src: "/home/{{ ansible_username }}/{{ zip_file }}"
-        dest: "/home/{{ ansible_username }}/"
+        src: "/home/{{ ansible_ssh_user }}/{{ zip_file }}"
+        dest: "/home/{{ ansible_ssh_user }}/"
         mode: 0755

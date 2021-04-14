@@ -15,4 +15,3 @@ node10 ansible_host=10.1.2.13
 
 [nodes:vars]
 ansible_connection=ssh
-ansible_ssh_user=sysadmin
