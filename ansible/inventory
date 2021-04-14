@@ -7,6 +7,11 @@ node2 ansible_host=10.1.2.5
 node3 ansible_host=10.1.2.6
 node4 ansible_host=10.1.2.7
 node5 ansible_host=10.1.2.8
+node6 ansible_host=10.1.2.9
+node7 ansible_host=10.1.2.10
+node8 ansible_host=10.1.2.11
+node9 ansible_host=10.1.2.12
+node10 ansible_host=10.1.2.13
 
 [nodes:vars]
 ansible_connection=ssh
