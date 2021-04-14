@@ -6,7 +6,7 @@
   vars:
     ansible_ssh_user: sysadmin
     ansible_ssh_pass: "{{ ansible_password }}"
-    zip_src: "https://github.com/roberto-mardeni/azure-blob-tester-java/releases/download/1.0/jar-with-dependencies.zip"
+    zip_src: "https://github.com/roberto-mardeni/azure-blob-tester-java/releases/download/1.1/jar-with-dependencies.zip"
     zip_file: "jar-with-dependencies.zip"
     jar_file: "blob-tester-v12-1.0-jar-with-dependencies.jar"
     app_insights_agent_jar_src: "https://github.com/microsoft/ApplicationInsights-Java/releases/download/3.0.3/applicationinsights-agent-3.0.3.jar"
