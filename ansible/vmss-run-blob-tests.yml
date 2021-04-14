@@ -21,10 +21,12 @@
       environment:
         AZURE_STORAGE_CONNECTION_STRING: "{{ storage_connection_string }}"
         APPLICATIONINSIGHTS_CONNECTION_STRING: "{{ app_insights_connection_string }}"
+        APPLICATIONINSIGHTS_INSTRUMENTATION_LOGGING_LEVEL: "ALL"
+        APPLICATIONINSIGHTS_PREVIEW_INSTRUMENTATION_AZURE_SDK_ENABLED: "true"
         TEST_MODE: "DownloadOnly"
         CONTAINER_NAME: "blob-tests"
         DOWNLOAD_PATH: "/home/{{ ansible_ssh_user }}/{{ download_path }}/"
-      shell: "java -jar /home/{{ ansible_ssh_user }}/{{ jar_file }} -javaagent:{{app_insights_agent_jar}}"
+      shell: "java -javaagent:/home/{{ ansible_ssh_user }}/{{app_insights_agent_jar}} -jar /home/{{ ansible_ssh_user }}/{{ jar_file }}"
       register: results
 
     - debug:
