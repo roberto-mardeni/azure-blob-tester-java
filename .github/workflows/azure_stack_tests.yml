@@ -15,7 +15,7 @@ jobs:
       - name: Upload Files
         working-directory: ansible
         run: |
-          ansible-playbook -i inventory agent-setup.yml --extra-vars "AZURE_STORAGE_CONNECTION_STRING=${{ secrets.PREMIUM_STORAGE_CONNECTION_STRING }} ansible_password=${{ secrets.ADMIN_PASSWORD }}"
+          ansible-playbook --connection=local agent-setup.yml --extra-vars "AZURE_STORAGE_CONNECTION_STRING=${{ secrets.PREMIUM_STORAGE_CONNECTION_STRING }} ansible_password=${{ secrets.ADMIN_PASSWORD }}"
       # - name: Setup Machine
       #   working-directory: ansible
       #   run: |

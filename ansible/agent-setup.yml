@@ -13,7 +13,8 @@
 # agent-setup.yml
 ---
 - name: "Upload Files"
-  hosts: agents
+  hosts: 127.0.0.1
+  connection: local
   become: yes
   vars:
     ansible_username: sysadmin
