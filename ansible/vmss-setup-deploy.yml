@@ -9,6 +9,8 @@
     zip_src: "https://github.com/roberto-mardeni/azure-blob-tester-java/releases/download/1.0/jar-with-dependencies.zip"
     zip_file: "jar-with-dependencies.zip"
     jar_file: "blob-tester-v12-1.0-jar-with-dependencies.jar"
+    app_insights_agent_jar_src: "https://github.com/microsoft/ApplicationInsights-Java/releases/download/3.0.3/applicationinsights-agent-3.0.3.jar"
+    app_insights_agent_jar: "applicationinsights-agent-3.0.3.jar"
   tasks:
     - name: Install APT Packages
       ansible.builtin.apt:
@@ -29,3 +31,10 @@
         src: "/home/{{ ansible_ssh_user }}/{{ zip_file }}"
         dest: "/home/{{ ansible_ssh_user }}/"
         mode: 0755
+
+    - name: Copy App Insights JAR file
+      ansible.builtin.get_url:
+        url: "{{ app_insights_agent_jar_src }}"
+        dest: "/home/{{ ansible_ssh_user }}/{{ app_insights_agent_jar }}"
+        mode: 0755
+        force: yes

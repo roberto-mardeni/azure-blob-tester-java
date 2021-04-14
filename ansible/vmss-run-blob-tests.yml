@@ -8,6 +8,8 @@
     jar_file: "blob-tester-v12-1.0-jar-with-dependencies.jar"
     download_path: "downloads"
     storage_connection_string: "{{ AZURE_STORAGE_CONNECTION_STRING }}"
+    app_insights_connection_string: "{{ APP_INSIGHTS_CONNECTION_STRING }}"
+    app_insights_agent_jar: "applicationinsights-agent-3.0.3.jar"
   tasks:
     - name: Create Downloads directory if it does not exist
       ansible.builtin.file:
@@ -18,10 +20,11 @@
     - name: Run Blob Tests
       environment:
         AZURE_STORAGE_CONNECTION_STRING: "{{ storage_connection_string }}"
+        APPLICATIONINSIGHTS_CONNECTION_STRING: "{{ app_insights_connection_string }}"
         TEST_MODE: "DownloadOnly"
         CONTAINER_NAME: "blob-tests"
         DOWNLOAD_PATH: "/home/{{ ansible_ssh_user }}/{{ download_path }}/"
-      shell: "java -jar /home/{{ ansible_ssh_user }}/{{ jar_file }}"
+      shell: "java -jar /home/{{ ansible_ssh_user }}/{{ jar_file }} -javaagent:{{app_insights_agent_jar}}"
       register: results
 
     - debug:
