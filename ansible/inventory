@@ -1,12 +1,12 @@
-[control]
-agentvm
+[agents]
+agent-vm
 
 [nodes]
-10.0.2.6
-10.0.2.7
-10.0.2.8
-10.0.2.9
-10.0.2.10
+10.1.2.4
+# 10.1.2.5
+# 10.1.2.6
+# 10.1.2.7
+# 10.1.2.8
 
 [nodes:vars]
 ansible_user=sysadmin

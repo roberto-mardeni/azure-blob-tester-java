@@ -10,3 +10,47 @@
 # Add agentvm node to /etc/ansible/hosts
 # sudo pip install -r requirements-azure.txt
 # sudo apt-get install sshpass
+# agent-setup.yml
+---
+- name: "Upload Files"
+  hosts: agents
+  become: yes
+  vars:
+    ansible_username: sysadmin
+    ansible_password: "{{ ansible_password }}"
+    zip_src: "https://github.com/roberto-mardeni/azure-blob-tester-java/releases/download/1.0/jar-with-dependencies.zip"
+    zip_file: "jar-with-dependencies.zip"
+    jar_file: "blob-tester-v12-1.0-jar-with-dependencies.jar"
+  tasks:
+    - name: Install APT Packages
+      ansible.builtin.apt:
+        pkg:
+        - default-jre
+        - unzip
+        update_cache: yes
+
+    - name: Copy JAR ZIP file
+      ansible.builtin.get_url:
+        url: "{{ zip_src }}"
+        dest: "/home/{{ ansible_username }}/{{ zip_file }}"
+        mode: 0644
+        force: yes
+
+    - name: Unzip JAR ZIP file
+      ansible.builtin.unarchive:
+        src: "/home/{{ ansible_username }}/{{ zip_file }}"
+        dest: "/home/{{ ansible_username }}/"
+        mode: 0755
+
+    - name: Upload Blobs
+      environment:
+        AZURE_STORAGE_CONNECTION_STRING: "{{ storage_connection_string }}"
+        TEST_MODE: "UploadOnly"
+        CONTAINER_NAME: "blob-tests"
+        DOWNLOAD_PATH: "/home/{{ ansible_username }}/{{ download_path }}/"
+        FILE_UPLOAD_MULTIPLIER: 100
+      shell: "java -jar /home/{{ ansible_username }}/{{ jar_file }}"
+      register: results
+
+    - debug:
+        var: results.stdout_lines
