@@ -2,6 +2,7 @@
 ---
 - name: "VMSS Setup & Deploy Artifacts"
   hosts: nodes
+  strategy: free
   become: yes
   vars:
     ansible_ssh_user: sysadmin
