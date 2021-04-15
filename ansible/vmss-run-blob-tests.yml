@@ -29,7 +29,4 @@
         CONTAINER_NAME: "blob-tests"
         DOWNLOAD_PATH: "/home/{{ ansible_ssh_user }}/{{ download_path }}/"
       shell: "java -javaagent:/home/{{ ansible_ssh_user }}/{{app_insights_agent_jar}} -jar /home/{{ ansible_ssh_user }}/{{ jar_file }}"
-      register: results
 
-    - debug:
-        var: results.stdout_lines
