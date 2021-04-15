@@ -2,16 +2,26 @@
 agent-vm
 
 [nodes]
-node1 ansible_host=10.1.2.14
-node2 ansible_host=10.1.2.15
-node3 ansible_host=10.1.2.16
-node4 ansible_host=10.1.2.17
-node5 ansible_host=10.1.2.18
-node6 ansible_host=10.1.2.19
-node7 ansible_host=10.1.2.20
-node8 ansible_host=10.1.2.21
-node9 ansible_host=10.1.2.22
-node10 ansible_host=10.1.2.23
+node1 ansible_host=10.1.2.24
+node2 ansible_host=10.1.2.25
+node3 ansible_host=10.1.2.26
+node4 ansible_host=10.1.2.27
+node5 ansible_host=10.1.2.28
+node6 ansible_host=10.1.2.29
+node7 ansible_host=10.1.2.30
+node8 ansible_host=10.1.2.31
+node9 ansible_host=10.1.2.32
+node10 ansible_host=10.1.2.33
+node11 ansible_host=10.1.2.34
+node12 ansible_host=10.1.2.35
+node13 ansible_host=10.1.2.36
+node14 ansible_host=10.1.2.37
+node15 ansible_host=10.1.2.38
+node16 ansible_host=10.1.2.39
+node17 ansible_host=10.1.2.40
+node18 ansible_host=10.1.2.41
+node19 ansible_host=10.1.2.42
+node20 ansible_host=10.1.2.43
 
 [nodes:vars]
 ansible_connection=ssh
