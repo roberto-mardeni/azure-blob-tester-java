@@ -51,7 +51,7 @@
         TEST_MODE: "UploadOnly"
         CONTAINER_NAME: "blob-tests"
         DOWNLOAD_PATH: "/home/{{ ansible_username }}/{{ download_path }}/"
-        FILE_UPLOAD_MULTIPLIER: 1000
+        FILE_UPLOAD_MULTIPLIER: 10000
       shell: "java -jar /home/{{ ansible_username }}/{{ jar_file }}"
       register: results
 
