@@ -16,6 +16,7 @@ public class BlobTester {
     String containerName;
     String localDownloadPath;
     ClientLogger logger;
+    int MaxTries = 3;
 
     public BlobTester(Boolean randomSleepsEnabled, int fileUploadMultiplier, String azureConnectionString,
             TestMode mode, String containerName, String localDownloadPath, ClientLogger logger) {
@@ -35,11 +36,8 @@ public class BlobTester {
         BlobServiceClient blobServiceClient = new BlobServiceClientBuilder().connectionString(connectStr)
                 // .retryOptions(new RequestRetryOptions())
                 // .addPolicy(new RetryPolicy())
-                .httpLogOptions(
-                    new HttpLogOptions()
-                        .setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                        .setAllowedHeaderNames(Set.of("x-ms-meta-foo"))
-                        .setAllowedQueryParamNames(Set.of("sv")))
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                        .setAllowedHeaderNames(Set.of("x-ms-meta-foo")).setAllowedQueryParamNames(Set.of("sv")))
                 .buildClient();
 
         // Create a unique name for the container if not already provided
@@ -98,12 +96,30 @@ public class BlobTester {
                 BlobClient blobClient = containerClient.getBlobClient(blobName);
 
                 try {
-                    blobClient.downloadToFile(this.localDownloadPath + blobName, true);
+                    for (int tries = 1; tries <= MaxTries; tries++) {
+                        // Add an exponential sleep for retries
+                        if (tries > 1) {
+                            long sleepTime = tries * 100;
+                            try {
+                                Thread.sleep(sleepTime);
+                            } catch (Exception e) {
+                                logger.error(e.getMessage());
+                            }
+                        }
+                        try {
+                            blobClient.downloadToFile(this.localDownloadPath + blobName, true);
+                            logger.info("\tDownloaded " + blobName + ", Tries: " + tries);
+                            randomSleep();
+                            break;
+                        } catch (UncheckedIOException ex) {
+                            if (tries == MaxTries) {
+                                throw ex;
+                            }
+                        }
+                    }
                 } catch (UncheckedIOException ex) {
-                    logger.error("\tError downloading");
+                    logger.error("\tError downloading " + blobName + ", " + ex.getMessage());
                 }
-
-                randomSleep();
             }
         }
 
