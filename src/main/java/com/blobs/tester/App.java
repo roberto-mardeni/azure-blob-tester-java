@@ -2,12 +2,16 @@ package com.blobs.tester;
 
 import java.io.IOException;
 
+import com.azure.core.util.logging.ClientLogger;
+
 public class App {
     static Boolean randomSleepsEnabled = false;
 
     public static void main(String[] args) throws IOException {
-        System.out.println("Azure Blob Storage v12 - Tester\n");
-        System.out.println("Settings:");
+        ClientLogger logger = new ClientLogger("com.blobs.tester.App");
+
+        logger.info("Azure Blob Storage v12 - Tester\n");
+        logger.info("Settings:");
 
         // Retrieve value to enable random sleeps
         String randomSleepsEnabledSetting = System.getenv("ENABLE_RANDOM_SLEEPS");
@@ -15,7 +19,7 @@ public class App {
         randomSleepsEnabled = (randomSleepsEnabledSetting != null
                 && randomSleepsEnabledSetting.toLowerCase().equalsIgnoreCase("true"));
 
-        System.out.println("\tRandom Sleep Enabled: " + randomSleepsEnabled);
+        logger.info("\tRandom Sleep Enabled: " + randomSleepsEnabled);
 
         // Retrieve value to enable file upload multiplier
         int fileUploadMultiplier = 1;
@@ -25,7 +29,7 @@ public class App {
             fileUploadMultiplier = Integer.parseInt(fileUploadMultiplierSetting);
         }
 
-        System.out.println("\tFile Upload Multipler: " + fileUploadMultiplier);
+        logger.info("\tFile Upload Multipler: " + fileUploadMultiplier);
 
         // Retrieve the connection string for use with the application. The storage
         // connection string is stored in an environment variable on the machine
@@ -40,7 +44,7 @@ public class App {
             connectStr = "UseDevelopmentStorage=true";
         }
 
-        System.out.println("\tAzure Storage Connection String: " + connectStr.substring(0, 21) + "...");
+        logger.info("\tAzure Storage Connection String: " + connectStr.substring(0, 21) + "...");
 
         TestMode mode = TestMode.UploadAndDownload;
 
@@ -58,17 +62,17 @@ public class App {
                     validValues += m.toString();
                 }
 
-                System.err.println(
+                logger.error(
                         "\tERROR: Invalid value for Test Mode " + modeString + ". Acceptable values: " + validValues);
                 return;
             }
         }
 
-        System.out.println("\tTest Mode: " + mode + "...");
+        logger.info("\tTest Mode: " + mode + "...");
 
         String containerName = System.getenv("CONTAINER_NAME");
 
-        System.out.println("\tContainer Name: " + containerName + "...");
+        logger.info("\tContainer Name: " + containerName + "...");
 
         String localDownloadPath = System.getenv("DOWNLOAD_PATH");
 
@@ -76,11 +80,9 @@ public class App {
             localDownloadPath = System.getProperty("java.io.tmpdir");
         }
 
-        System.out.println("\tLocal Download Path: " + localDownloadPath);
+        logger.info("\tLocal Download Path: " + localDownloadPath);
 
-        System.out.println("\n");
-
-        new BlobTester(randomSleepsEnabled, fileUploadMultiplier, connectStr, mode, containerName, localDownloadPath)
+        new BlobTester(randomSleepsEnabled, fileUploadMultiplier, connectStr, mode, containerName, localDownloadPath, logger)
                 .PerformTest();
     }
 }

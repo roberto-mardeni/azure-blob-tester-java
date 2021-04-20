@@ -1,10 +1,12 @@
 package com.blobs.tester;
 
 import com.azure.core.http.policy.*;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.*;
 import com.azure.storage.blob.models.*;
 
 import java.io.*;
+import java.util.*;
 
 public class BlobTester {
     Boolean randomSleepsEnabled = false;
@@ -13,15 +15,17 @@ public class BlobTester {
     TestMode mode;
     String containerName;
     String localDownloadPath;
+    ClientLogger logger;
 
     public BlobTester(Boolean randomSleepsEnabled, int fileUploadMultiplier, String azureConnectionString,
-            TestMode mode, String containerName, String localDownloadPath) {
+            TestMode mode, String containerName, String localDownloadPath, ClientLogger logger) {
         this.randomSleepsEnabled = randomSleepsEnabled;
         this.fileUploadMultiplier = fileUploadMultiplier;
         this.connectStr = azureConnectionString;
         this.mode = mode;
         this.containerName = containerName;
         this.localDownloadPath = localDownloadPath;
+        this.logger = logger;
     }
 
     public void PerformTest() {
@@ -31,7 +35,12 @@ public class BlobTester {
         BlobServiceClient blobServiceClient = new BlobServiceClientBuilder().connectionString(connectStr)
                 // .retryOptions(new RequestRetryOptions())
                 // .addPolicy(new RetryPolicy())
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC)).buildClient();
+                .httpLogOptions(
+                    new HttpLogOptions()
+                        .setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                        .setAllowedHeaderNames(Set.of("x-ms-meta-foo"))
+                        .setAllowedQueryParamNames(Set.of("sv")))
+                .buildClient();
 
         // Create a unique name for the container if not already provided
         if (containerName == null) {
@@ -46,10 +55,10 @@ public class BlobTester {
         try {
             if (!containerClient.exists()) {
                 containerClient.create();
-                System.out.println(String.format("\nCreated container %s", containerName));
+                logger.info(String.format("\nCreated container %s", containerName));
             }
         } catch (Exception ex) {
-            System.err.println(String.format("\nContainer already present %s", containerName));
+            logger.error(String.format("\nContainer already present %s", containerName));
         }
 
         String[] files = new String[] { "small", "medium", "large", "verylarge" };
@@ -62,7 +71,7 @@ public class BlobTester {
                     for (int multiplier = 1; multiplier <= fileUploadMultiplier; multiplier++) {
                         String path = "/files/" + file + "." + extension;
                         String blobName = multiplier + "-" + file + "." + extension;
-                        System.out.println("\tUploading " + path + " to " + blobName);
+                        logger.info("\tUploading " + path + " to " + blobName);
 
                         BlobClient blobClient = containerClient.getBlobClient(blobName);
                         InputStream data = getClass().getResourceAsStream(path);
@@ -70,7 +79,7 @@ public class BlobTester {
                         try {
                             blobClient.upload(data, data.available(), true);
                         } catch (IOException ex) {
-                            System.err.println("\tError uploading");
+                            logger.error("\tError uploading");
                         }
 
                         randomSleep();
@@ -81,17 +90,17 @@ public class BlobTester {
 
         if (this.mode == TestMode.UploadAndDownload || this.mode == TestMode.DownloadOnly) {
             // List and download the blob(s) in the container.
-            System.out.println(String.format("\n\nListing and downloading blobs... in %s", containerName));
+            logger.info(String.format("\n\nListing and downloading blobs... in %s", containerName));
 
             for (BlobItem blobItem : containerClient.listBlobs()) {
                 String blobName = blobItem.getName();
-                System.out.println("\tDownloading " + blobName);
+                logger.info("\tDownloading " + blobName);
                 BlobClient blobClient = containerClient.getBlobClient(blobName);
 
                 try {
                     blobClient.downloadToFile(this.localDownloadPath + blobName, true);
                 } catch (UncheckedIOException ex) {
-                    System.err.println("\tError downloading");
+                    logger.error("\tError downloading");
                 }
 
                 randomSleep();
@@ -100,14 +109,14 @@ public class BlobTester {
 
         // Clean up
         if (doCleanUp && this.mode == TestMode.UploadAndDownload) {
-            System.out.println("\nPress the Enter key to begin clean up");
+            logger.info("\nPress the Enter key to begin clean up");
             System.console().readLine();
 
-            System.out.println("Deleting blob container...");
+            logger.info("Deleting blob container...");
             containerClient.delete();
         }
 
-        System.out.println("Done");
+        logger.info("Done");
     }
 
     private void randomSleep() {
@@ -117,10 +126,10 @@ public class BlobTester {
                 int min = 100;
                 int max = 300;
                 long sleepTime = (long) (Math.random() * (max - min + 1) + min);
-                System.out.println("\tSleeping for " + sleepTime);
+                logger.info("\tSleeping for " + sleepTime);
                 Thread.sleep(sleepTime);
             } catch (Exception e) {
-                System.err.println(e);
+                logger.error(e.getMessage());
             }
         }
     }
