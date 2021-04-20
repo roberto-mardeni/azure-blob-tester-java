@@ -33,11 +33,13 @@ public class BlobTester {
         Boolean doCleanUp = true;
         // Create a BlobServiceClient object which will be used to create a container
         // client
+        Set<String> allowedHeaderNames = new HashSet<>(Arrays.asList("x-ms-meta-foo"));
+        Set<String> allowedQueryParamNames = new HashSet<>(Arrays.asList("sv"));
         BlobServiceClient blobServiceClient = new BlobServiceClientBuilder().connectionString(connectStr)
                 // .retryOptions(new RequestRetryOptions())
                 // .addPolicy(new RetryPolicy())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                        .setAllowedHeaderNames(Set.of("x-ms-meta-foo")).setAllowedQueryParamNames(Set.of("sv")))
+                        .setAllowedHeaderNames(allowedHeaderNames).setAllowedQueryParamNames(allowedQueryParamNames))
                 .buildClient();
 
         // Create a unique name for the container if not already provided
